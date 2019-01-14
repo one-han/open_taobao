@@ -5,7 +5,7 @@
 package rds
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 在rds实例里创建数据库 */

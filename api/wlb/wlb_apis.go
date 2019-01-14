@@ -5,7 +5,7 @@
 package wlb
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 查询库存明细 */

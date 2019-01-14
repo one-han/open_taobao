@@ -5,7 +5,7 @@
 package product
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 查询用户设置的售后服务模板，仅返回标题和id */

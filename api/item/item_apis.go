@@ -5,7 +5,7 @@
 package item
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 查询B商家被授权品牌列表、类目列表和 c 商家新品类目列表 */

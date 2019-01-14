@@ -5,7 +5,7 @@
 package fuwu
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 服务商通过使用该接口来产生营销链接，通过把这种链接发送给商家来做自定义人群的服务营销<br>

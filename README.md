@@ -22,47 +22,47 @@ open_taobao
 
 **安装主包**
 
-* go get github.com/changkong/open_taobao
+* go get github.com/one-han/open_taobao
 
 **安装子包**
 
-* go get github.com/changkong/open_taobao/api/user
+* go get github.com/one-han/open_taobao/api/user
 
 **更多子包**
 
-* **用户API:**  github.com/changkong/open_taobao/api/user
-* **类目API:**  github.com/changkong/open_taobao/api/item
-* **商品API:**  github.com/changkong/open_taobao/api/product
-* **交易API:**  github.com/changkong/open_taobao/api/trade
-* **评价API:**  github.com/changkong/open_taobao/api/pinjia
-* **物流API:**  github.com/changkong/open_taobao/api/delivery
-* **店铺API:**  github.com/changkong/open_taobao/api/shop
-* **分销API:**  github.com/changkong/open_taobao/api/fenxiao
-* **旺旺API:**  github.com/changkong/open_taobao/api/wangwang
-* **淘客API:**  github.com/changkong/open_taobao/api/taobaoke
-* **主动通知业务API:**  github.com/changkong/open_taobao/api/notice
-* **工具类API:**  github.com/changkong/open_taobao/api/tools
-* **物流宝API:**  github.com/changkong/open_taobao/api/wlb
-* **直通车API:**  github.com/changkong/open_taobao/api/simba
-* **收藏夹API:**  github.com/changkong/open_taobao/api/favorite
-* **机票API:**  github.com/changkong/open_taobao/api/jipiao
-* **营销API:**  github.com/changkong/open_taobao/api/marketing
-* **数据API:**  github.com/changkong/open_taobao/api/udp
-* **酒店API:**  github.com/changkong/open_taobao/api/hotel
-* **店铺会员管理API:**  github.com/changkong/open_taobao/api/crm
-* **多媒体平台API:**  github.com/changkong/open_taobao/api/dmt
-* **子账号管理API:**  github.com/changkong/open_taobao/api/subuser
-* **服务平台API:**  github.com/changkong/open_taobao/api/fuwu
-* **退款API:**  github.com/changkong/open_taobao/api/refund
-* **关联推荐API:**  github.com/changkong/open_taobao/api/recommend
-* **组件API:**  github.com/changkong/open_taobao/api/widget
-* **支付宝API:**  github.com/changkong/open_taobao/api/alipy
-* **天猫精品库API:**  github.com/changkong/open_taobao/api/jp
-* **聚石塔API:**  github.com/changkong/open_taobao/api/rds
-* **旅行度假API:**  github.com/changkong/open_taobao/api/trvael
-* **彩票API:**  github.com/changkong/open_taobao/api/caipiao
-* **账务API:**  github.com/changkong/open_taobao/api/bill
-* **天猫退款退货API:**  github.com/changkong/open_taobao/api/eai
+* **用户API:**  github.com/one-han/open_taobao/api/user
+* **类目API:**  github.com/one-han/open_taobao/api/item
+* **商品API:**  github.com/one-han/open_taobao/api/product
+* **交易API:**  github.com/one-han/open_taobao/api/trade
+* **评价API:**  github.com/one-han/open_taobao/api/pinjia
+* **物流API:**  github.com/one-han/open_taobao/api/delivery
+* **店铺API:**  github.com/one-han/open_taobao/api/shop
+* **分销API:**  github.com/one-han/open_taobao/api/fenxiao
+* **旺旺API:**  github.com/one-han/open_taobao/api/wangwang
+* **淘客API:**  github.com/one-han/open_taobao/api/taobaoke
+* **主动通知业务API:**  github.com/one-han/open_taobao/api/notice
+* **工具类API:**  github.com/one-han/open_taobao/api/tools
+* **物流宝API:**  github.com/one-han/open_taobao/api/wlb
+* **直通车API:**  github.com/one-han/open_taobao/api/simba
+* **收藏夹API:**  github.com/one-han/open_taobao/api/favorite
+* **机票API:**  github.com/one-han/open_taobao/api/jipiao
+* **营销API:**  github.com/one-han/open_taobao/api/marketing
+* **数据API:**  github.com/one-han/open_taobao/api/udp
+* **酒店API:**  github.com/one-han/open_taobao/api/hotel
+* **店铺会员管理API:**  github.com/one-han/open_taobao/api/crm
+* **多媒体平台API:**  github.com/one-han/open_taobao/api/dmt
+* **子账号管理API:**  github.com/one-han/open_taobao/api/subuser
+* **服务平台API:**  github.com/one-han/open_taobao/api/fuwu
+* **退款API:**  github.com/one-han/open_taobao/api/refund
+* **关联推荐API:**  github.com/one-han/open_taobao/api/recommend
+* **组件API:**  github.com/one-han/open_taobao/api/widget
+* **支付宝API:**  github.com/one-han/open_taobao/api/alipy
+* **天猫精品库API:**  github.com/one-han/open_taobao/api/jp
+* **聚石塔API:**  github.com/one-han/open_taobao/api/rds
+* **旅行度假API:**  github.com/one-han/open_taobao/api/trvael
+* **彩票API:**  github.com/one-han/open_taobao/api/caipiao
+* **账务API:**  github.com/one-han/open_taobao/api/bill
+* **天猫退款退货API:**  github.com/one-han/open_taobao/api/eai
 
 测试说明
 ========

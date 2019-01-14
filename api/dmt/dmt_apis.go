@@ -5,7 +5,7 @@
 package dmt
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 同一卖家最多添加500个图片分类，图片分类名称长度最大为20个字符 */

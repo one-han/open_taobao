@@ -5,7 +5,7 @@
 package user
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 查询买家信息API，只能买家类应用调用。 */

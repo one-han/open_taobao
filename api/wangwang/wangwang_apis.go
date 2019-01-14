@@ -5,7 +5,7 @@
 package wangwang
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 增加关键词，只支持json返回 */

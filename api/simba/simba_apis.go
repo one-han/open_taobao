@@ -5,7 +5,7 @@
 package simba
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 获取实时余额，”元”为单位 */

@@ -5,1108 +5,1225 @@
 package taobaoke
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
-/* 淘宝客类目推广URL.
-<p>由于受到<a href="http://club.alimama.com/read-htm-tid-3133847.html">淘宝联盟pid升级规则</a>影响，该接口后续可能会下线。建议直接使用拼链接的方式（塞入完整的pid）来获取搜索结果，而不是调用该接口来获取结果</p> */
-type TaobaokeCaturlGetRequest struct {
+/* 淘宝客商品详情查询（简版） */
+type TbkItemInfoGetRequest struct {
 	open_taobao.TaobaoMethodRequest
 }
 
-/* 标准商品后台类目id。该ID可以通过taobao.itemcats.get接口获取到。 */
-func (r *TaobaokeCaturlGetRequest) SetCid(value string) {
-	r.SetValue("cid", value)
+/* ip地址，影响邮费获取，如果不传或者传入不准确，邮费无法精准提供 */
+func (r *TbkItemInfoGetRequest) SetIp(value string) {
+	r.SetValue("ip", value)
 }
 
-/* 推广者的淘宝会员昵称.注：这里指的是淘宝的登录会员名 */
-func (r *TaobaokeCaturlGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeCaturlGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20 */
-func (r *TaobaokeCaturlGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 关键词 */
-func (r *TaobaokeCaturlGetRequest) SetQ(value string) {
-	r.SetValue("q", value)
-}
-
-func (r *TaobaokeCaturlGetRequest) GetResponse(accessToken string) (*TaobaokeCaturlGetResponse, []byte, error) {
-	var resp TaobaokeCaturlGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.caturl.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeCaturlGetResponse struct {
-	TaobaokeItem *TaobaokeItem `json:"taobaoke_item"`
-}
-
-type TaobaokeCaturlGetResponseResult struct {
-	Response *TaobaokeCaturlGetResponse `json:"taobaoke_caturl_get_response"`
-}
-
-/* 查询淘客折扣商品。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeItemsCouponGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 商品所在地 */
-func (r *TaobaokeItemsCouponGetRequest) SetArea(value string) {
-	r.SetValue("area", value)
-}
-
-/* 标准商品后台类目id。该ID可以通过taobao.itemcats.get接口获取到。 */
-func (r *TaobaokeItemsCouponGetRequest) SetCid(value string) {
-	r.SetValue("cid", value)
-}
-
-/* 优惠商品类型.1:打折商品,默认值为1 */
-func (r *TaobaokeItemsCouponGetRequest) SetCouponType(value string) {
-	r.SetValue("coupon_type", value)
-}
-
-/* 设置30天累计推广量（与返回数据中的commission_num字段对应）上限.注：该字段要与start_commissionNum一起使用才生效 */
-func (r *TaobaokeItemsCouponGetRequest) SetEndCommissionNum(value string) {
-	r.SetValue("end_commission_num", value)
-}
-
-/* 最高佣金比率选项，如：2345表示23.45%。注：要起始佣金比率和最高佣金比率一起设置才有效。 */
-func (r *TaobaokeItemsCouponGetRequest) SetEndCommissionRate(value string) {
-	r.SetValue("end_commission_rate", value)
-}
-
-/* 最高累计推广佣金选项 */
-func (r *TaobaokeItemsCouponGetRequest) SetEndCommissionVolume(value string) {
-	r.SetValue("end_commission_volume", value)
-}
-
-/* 设置折扣比例范围上限,如：8000表示80.00%.注：要起始折扣比率和最高折扣比率一起设置才有效 */
-func (r *TaobaokeItemsCouponGetRequest) SetEndCouponRate(value string) {
-	r.SetValue("end_coupon_rate", value)
-}
-
-/* 可选值和start_credit一样.start_credit的值一定要小于或等于end_credit的值。注：end_credit与start_credit一起使用才生效 */
-func (r *TaobaokeItemsCouponGetRequest) SetEndCredit(value string) {
-	r.SetValue("end_credit", value)
-}
-
-/* 设置商品总成交量（与返回字段volume对应）上限。 */
-func (r *TaobaokeItemsCouponGetRequest) SetEndVolume(value string) {
-	r.SetValue("end_volume", value)
-}
-
-/* 需返回的字段列表.可选值:num_iid,title,nick,pic_url,price,click_url,commission,commission_rate,commission_num,commission_volume,shop_click_url,seller_credit_score,item_location,volume,coupon_price,coupon_rate,coupon_start_time,coupon_end_time,shop_type;字段之间用","分隔 */
-func (r *TaobaokeItemsCouponGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串.如果不传值,则默认是false */
-func (r *TaobaokeItemsCouponGetRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
-}
-
-/* 商品标题中包含的关键字. 注意:查询时keyword,cid至少选择其中一个参数 */
-func (r *TaobaokeItemsCouponGetRequest) SetKeyword(value string) {
-	r.SetValue("keyword", value)
-}
-
-/* 推广者的淘宝会员昵称.注:指的是淘宝的会员登录名 */
-func (r *TaobaokeItemsCouponGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道 */
-func (r *TaobaokeItemsCouponGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 结果页数.1~99 */
-func (r *TaobaokeItemsCouponGetRequest) SetPageNo(value string) {
-	r.SetValue("page_no", value)
-}
-
-/* 每页返回结果数.最大每页100 */
-func (r *TaobaokeItemsCouponGetRequest) SetPageSize(value string) {
-	r.SetValue("page_size", value)
-}
-
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20。第一次调用接口的用户，推荐该入参不要填写，使用nick=（淘宝账号）的方式去获取，以免出错。 */
-func (r *TaobaokeItemsCouponGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 点击串跳转类型，1：单品，2：单品中间页（无线暂无） */
-func (r *TaobaokeItemsCouponGetRequest) SetReferType(value string) {
-	r.SetValue("refer_type", value)
-}
-
-/* 店铺类型.默认all,商城:b,集市:c */
-func (r *TaobaokeItemsCouponGetRequest) SetShopType(value string) {
-	r.SetValue("shop_type", value)
-}
-
-/* default(默认排序),
-price_desc(折扣价格从高到低),
-price_asc(折扣价格从低到高),
-credit_desc(信用等级从高到低),
-credit_asc(信用等级从低到高),
-commissionRate_desc(佣金比率从高到低),
-commissionRate_asc(佣金比率从低到高),
-volume_desc(成交量成高到低), volume_asc(成交量从低到高) */
-func (r *TaobaokeItemsCouponGetRequest) SetSort(value string) {
-	r.SetValue("sort", value)
-}
-
-/* 设置30天累计推广量（与返回数据中的commission_num字段对应）下限.注：该字段要与end_commissionNum一起使用才生效 */
-func (r *TaobaokeItemsCouponGetRequest) SetStartCommissionNum(value string) {
-	r.SetValue("start_commission_num", value)
-}
-
-/* 起始佣金比率选项，如：1234表示12.34% */
-func (r *TaobaokeItemsCouponGetRequest) SetStartCommissionRate(value string) {
-	r.SetValue("start_commission_rate", value)
-}
-
-/* 起始累计推广量佣金.注：返回的数据是30天内累计推广佣金，该字段要与最高累计推广佣金一起使用才生效 */
-func (r *TaobaokeItemsCouponGetRequest) SetStartCommissionVolume(value string) {
-	r.SetValue("start_commission_volume", value)
-}
-
-/* 设置折扣比例范围下限,如：7000表示70.00% */
-func (r *TaobaokeItemsCouponGetRequest) SetStartCouponRate(value string) {
-	r.SetValue("start_coupon_rate", value)
-}
-
-/* 卖家信用: 1heart(一心) 2heart (两心) 3heart(三心) 4heart(四心) 5heart(五心) 1diamond(一钻) 2diamond(两钻) 3diamond(三钻) 4diamond(四钻) 5diamond(五钻) 1crown(一冠) 2crown(两冠) 3crown(三冠) 4crown(四冠) 5crown(五冠) 1goldencrown(一黄冠) 2goldencrown(二黄冠) 3goldencrown(三黄冠) 4goldencrown(四黄冠) 5goldencrown(五黄冠) */
-func (r *TaobaokeItemsCouponGetRequest) SetStartCredit(value string) {
-	r.SetValue("start_credit", value)
-}
-
-/* 设置商品总成交量（与返回字段volume对应）下限。 */
-func (r *TaobaokeItemsCouponGetRequest) SetStartVolume(value string) {
-	r.SetValue("start_volume", value)
-}
-
-func (r *TaobaokeItemsCouponGetRequest) GetResponse(accessToken string) (*TaobaokeItemsCouponGetResponse, []byte, error) {
-	var resp TaobaokeItemsCouponGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.items.coupon.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeItemsCouponGetResponse struct {
-	TaobaokeItems []*TaobaokeItem `json:"taobaoke_items"`
-	TotalResults  int             `json:"total_results"`
-}
-
-type TaobaokeItemsCouponGetResponseResult struct {
-	Response *TaobaokeItemsCouponGetResponse `json:"taobaoke_items_coupon_get_response"`
-}
-
-/* 查询淘宝客推广商品详细信息。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeItemsDetailGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 需返回的字段列表.可选值:TaobaokeItemDetail淘宝客商品结构体中的所有字段;字段之间用","分隔。item_detail需要设置到Item模型下的字段,如设置:num_iid,detail_url等; 只设置item_detail,则不返回的Item下的所有信息.注：item结构中的skus、videos、props_name不返回 */
-func (r *TaobaokeItemsDetailGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串.如果不传值,则默认是false. */
-func (r *TaobaokeItemsDetailGetRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
-}
-
-/* 淘宝用户昵称，注：指的是淘宝的会员登录名.如果昵称错误,那么客户就收不到佣金.每个淘宝昵称都对应于一个pid，在这里输入要结算佣金的淘宝昵称，当推广的商品成功后，佣金会打入此输入的淘宝昵称的账户。具体的信息可以登入阿里妈妈的网站查看. */
-func (r *TaobaokeItemsDetailGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 淘宝客商品数字id串.最大输入10个.格式如:"value1,value2,value3" 用" , "号分隔商品id. */
-func (r *TaobaokeItemsDetailGetRequest) SetNumIids(value string) {
+/* 商品ID串，用,分割，最大40个 */
+func (r *TbkItemInfoGetRequest) SetNumIids(value string) {
 	r.SetValue("num_iids", value)
 }
 
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeItemsDetailGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkItemInfoGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
 }
 
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20。第一次调用接口的用户，推荐该入参不要填写，使用nick=（淘宝账号）的方式去获取，以免出错。 */
-func (r *TaobaokeItemsDetailGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 点击串跳转类型，1：单品，2：单品中间页（无线暂无） */
-func (r *TaobaokeItemsDetailGetRequest) SetReferType(value string) {
-	r.SetValue("refer_type", value)
-}
-
-/* 商品track_iid串（带有追踪效果的商品id),最大输入10个,与num_iids必填其一 */
-func (r *TaobaokeItemsDetailGetRequest) SetTrackIids(value string) {
-	r.SetValue("track_iids", value)
-}
-
-func (r *TaobaokeItemsDetailGetRequest) GetResponse(accessToken string) (*TaobaokeItemsDetailGetResponse, []byte, error) {
-	var resp TaobaokeItemsDetailGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.items.detail.get", &resp)
+func (r *TbkItemInfoGetRequest) GetResponse(accessToken string) (*TbkItemInfoGetResponse, []byte, error) {
+	var resp TbkItemInfoGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.item.info.get", &resp)
 	if err != nil {
 		return nil, data, err
 	}
 	return resp.Response, data, err
 }
 
-type TaobaokeItemsDetailGetResponse struct {
-	TaobaokeItemDetails []*TaobaokeItemDetail `json:"taobaoke_item_details"`
-	TotalResults        int                   `json:"total_results"`
+type TbkItemInfoGetResponse struct {
+	Results []*NTbkItem `json:"results"`
 }
 
-type TaobaokeItemsDetailGetResponseResult struct {
-	Response *TaobaokeItemsDetailGetResponse `json:"taobaoke_items_detail_get_response"`
+type TbkItemInfoGetResponseResult struct {
+	Response *TbkItemInfoGetResponse `json:"tbk_item_info_get_response"`
 }
 
-/* 查询淘宝客推广商品,不能通过设置cid=0来查询。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeItemsGetRequest struct {
+/* 淘宝客商品关联推荐查询 */
+type TbkItemRecommendGetRequest struct {
 	open_taobao.TaobaoMethodRequest
 }
 
-/* 商品所在地 */
-func (r *TaobaokeItemsGetRequest) SetArea(value string) {
-	r.SetValue("area", value)
+/* 返回数量，默认20，最大值40 */
+func (r *TbkItemRecommendGetRequest) SetCount(value string) {
+	r.SetValue("count", value)
 }
 
-/* 是否自动发货 */
-func (r *TaobaokeItemsGetRequest) SetAutoSend(value string) {
-	r.SetValue("auto_send", value)
+/* 需返回的字段列表 */
+func (r *TbkItemRecommendGetRequest) SetFields(value string) {
+	r.SetValue("fields", value)
 }
 
-/* 是否支持抵价券，设置为true表示该商品支持抵价券，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetCashCoupon(value string) {
-	r.SetValue("cash_coupon", value)
+/* 商品Id */
+func (r *TbkItemRecommendGetRequest) SetNumIid(value string) {
+	r.SetValue("num_iid", value)
 }
 
-/* 是否支持货到付款，设置为true表示该商品是支持货到付款，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetCashOndelivery(value string) {
-	r.SetValue("cash_ondelivery", value)
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkItemRecommendGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
 }
 
-/* 标准商品后台类目id。该ID可以通过taobao.itemcats.get接口获取到。 */
-func (r *TaobaokeItemsGetRequest) SetCid(value string) {
-	r.SetValue("cid", value)
+func (r *TbkItemRecommendGetRequest) GetResponse(accessToken string) (*TbkItemRecommendGetResponse, []byte, error) {
+	var resp TbkItemRecommendGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.item.recommend.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
 }
 
-/* 30天累计推广量（与返回数据中的commission_num字段对应）上限. */
-func (r *TaobaokeItemsGetRequest) SetEndCommissionNum(value string) {
-	r.SetValue("end_commissionNum", value)
+type TbkItemRecommendGetResponse struct {
+	Results []*NTbkItem `json:"results"`
 }
 
-/* 佣金比率上限，如：2345表示23.45%。注：start_commissionRate和end_commissionRate一起设置才有效。 */
-func (r *TaobaokeItemsGetRequest) SetEndCommissionRate(value string) {
-	r.SetValue("end_commissionRate", value)
+type TbkItemRecommendGetResponseResult struct {
+	Response *TbkItemRecommendGetResponse `json:"tbk_item_recommend_get_response"`
 }
 
-/* 可选值和start_credit一样.start_credit的值一定要小于或等于end_credit的值。注：end_credit与start_credit一起使用才生效 */
-func (r *TaobaokeItemsGetRequest) SetEndCredit(value string) {
-	r.SetValue("end_credit", value)
+/* 淘宝客商品查询 */
+type TbkItemGetRequest struct {
+	open_taobao.TaobaoMethodRequest
 }
 
-/* 最高价格 */
-func (r *TaobaokeItemsGetRequest) SetEndPrice(value string) {
+/* 后台类目ID，用,分割，最大10个，该ID可以通过taobao.itemcats.get接口获取到 */
+func (r *TbkItemGetRequest) SetCat(value string) {
+	r.SetValue("cat", value)
+}
+
+/* 折扣价范围上限，单位：元 */
+func (r *TbkItemGetRequest) SetEndPrice(value string) {
 	r.SetValue("end_price", value)
 }
 
-/* 商品总成交量（与返回字段volume对应）上限。 */
-func (r *TaobaokeItemsGetRequest) SetEndTotalnum(value string) {
-	r.SetValue("end_totalnum", value)
+/* 淘客佣金比率下限，如：1234表示12.34% */
+func (r *TbkItemGetRequest) SetEndTkRate(value string) {
+	r.SetValue("end_tk_rate", value)
 }
 
-/* 需返回的字段列表.可选值:num_iid,title,nick,pic_url,price,click_url,commission,commission_rate,commission_num,commission_volume,shop_click_url,seller_credit_score,item_location,volume
-;字段之间用","分隔 */
-func (r *TaobaokeItemsGetRequest) SetFields(value string) {
+/* 需返回的字段列表 */
+func (r *TbkItemGetRequest) SetFields(value string) {
 	r.SetValue("fields", value)
 }
 
-/* 是否查询消保卖家 */
-func (r *TaobaokeItemsGetRequest) SetGuarantee(value string) {
-	r.SetValue("guarantee", value)
+/* 是否海外商品，设置为true表示该商品是属于海外商品，设置为false或不设置表示不判断这个属性 */
+func (r *TbkItemGetRequest) SetIsOverseas(value string) {
+	r.SetValue("is_overseas", value)
 }
 
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串.如果不传值,则默认是false. */
-func (r *TaobaokeItemsGetRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
+/* 是否商城商品，设置为true表示该商品是属于淘宝商城商品，设置为false或不设置表示不判断这个属性 */
+func (r *TbkItemGetRequest) SetIsTmall(value string) {
+	r.SetValue("is_tmall", value)
 }
 
-/* 商品标题中包含的关键字. 注意:查询时keyword,cid至少选择其中一个参数 */
-func (r *TaobaokeItemsGetRequest) SetKeyword(value string) {
-	r.SetValue("keyword", value)
+/* 所在地 */
+func (r *TbkItemGetRequest) SetItemloc(value string) {
+	r.SetValue("itemloc", value)
 }
 
-/* 是否商城的商品，设置为true表示该商品是属于淘宝商城的商品，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetMallItem(value string) {
-	r.SetValue("mall_item", value)
-}
-
-/* 淘宝用户昵称，注：指的是淘宝的会员登录名.如果昵称错误,那么客户就收不到佣金.每个淘宝昵称都对应于一个pid，在这里输入要结算佣金的淘宝昵称，当推广的商品成功后，佣金会打入此输入的淘宝昵称的账户。具体的信息可以登入阿里妈妈的网站查看.
-<font color="red">注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准</font> */
-func (r *TaobaokeItemsGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 是否30天维修，设置为true表示该商品是支持30天维修，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetOnemonthRepair(value string) {
-	r.SetValue("onemonth_repair", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeItemsGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 是否海外商品，设置为true表示该商品是属于海外商品，默认为false */
-func (r *TaobaokeItemsGetRequest) SetOverseasItem(value string) {
-	r.SetValue("overseas_item", value)
-}
-
-/* 结果页数.1~10 */
-func (r *TaobaokeItemsGetRequest) SetPageNo(value string) {
+/* 第几页，默认：１ */
+func (r *TbkItemGetRequest) SetPageNo(value string) {
 	r.SetValue("page_no", value)
 }
 
-/* 每页返回结果数.最大每页40 */
-func (r *TaobaokeItemsGetRequest) SetPageSize(value string) {
+/* 页大小，默认20，1~100 */
+func (r *TbkItemGetRequest) SetPageSize(value string) {
 	r.SetValue("page_size", value)
 }
 
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx".
-<font color="red">注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20</font>。第一次调用接口的用户，推荐该入参不要填写，使用nick=（淘宝账号）的方式去获取，以免出错。 */
-func (r *TaobaokeItemsGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkItemGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
 }
 
-/* 是否如实描述(即:先行赔付)商品，设置为true表示该商品是如实描述的商品，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetRealDescribe(value string) {
-	r.SetValue("real_describe", value)
-}
-
-/* 点击串跳转类型，1：单品，2：单品中间页（无线暂无） */
-func (r *TaobaokeItemsGetRequest) SetReferType(value string) {
-	r.SetValue("refer_type", value)
-}
-
-/* 是否支持7天退换，设置为true表示该商品支持7天退换，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetSevendaysReturn(value string) {
-	r.SetValue("sevendays_return", value)
-}
-
-/* 默认排序:default
-
-price_desc(价格从高到低)
-price_asc(价格从低到高)
-credit_desc(信用等级从高到低)
-commissionRate_desc(佣金比率从高到低)
-commissionRate_asc(佣金比率从低到高)
-commissionNum_desc(成交量成高到低)
-commissionNum_asc(成交量从低到高)
-commissionVolume_desc(总支出佣金从高到低)
-commissionVolume_asc(总支出佣金从低到高)
-delistTime_desc(商品下架时间从高到低)
-delistTime_asc(商品下架时间从低到高) */
-func (r *TaobaokeItemsGetRequest) SetSort(value string) {
-	r.SetValue("sort", value)
-}
-
-/* 30天累计推广量（与返回数据中的commission_num字段对应）下限.注：该字段要与end_commissionNum一起使用才生效 */
-func (r *TaobaokeItemsGetRequest) SetStartCommissionNum(value string) {
-	r.SetValue("start_commissionNum", value)
-}
-
-/* 佣金比率下限，如：1234表示12.34% */
-func (r *TaobaokeItemsGetRequest) SetStartCommissionRate(value string) {
-	r.SetValue("start_commissionRate", value)
-}
-
-/* 卖家信用:
-
-1heart(一心)
-2heart (两心)
-3heart(三心)
-4heart(四心)
-5heart(五心)
-1diamond(一钻)
-2diamond(两钻)
-3diamond(三钻)
-4diamond(四钻)
-5diamond(五钻)
-1crown(一冠)
-2crown(两冠)
-3crown(三冠)
-4crown(四冠)
-5crown(五冠)
-1goldencrown(一黄冠)
-2goldencrown(二黄冠)
-3goldencrown(三黄冠)
-4goldencrown(四黄冠)
-5goldencrown(五黄冠) */
-func (r *TaobaokeItemsGetRequest) SetStartCredit(value string) {
-	r.SetValue("start_credit", value)
-}
-
-/* 起始价格.传入价格参数时,需注意起始价格和最高价格必须一起传入,并且 start_price <= end_price */
-func (r *TaobaokeItemsGetRequest) SetStartPrice(value string) {
-	r.SetValue("start_price", value)
-}
-
-/* 商品总成交量（与返回字段volume对应）下限。 */
-func (r *TaobaokeItemsGetRequest) SetStartTotalnum(value string) {
-	r.SetValue("start_totalnum", value)
-}
-
-/* 是否支持VIP卡，设置为true表示该商品支持VIP卡，设置为false或不设置表示不判断这个属性 */
-func (r *TaobaokeItemsGetRequest) SetVipCard(value string) {
-	r.SetValue("vip_card", value)
-}
-
-func (r *TaobaokeItemsGetRequest) GetResponse(accessToken string) (*TaobaokeItemsGetResponse, []byte, error) {
-	var resp TaobaokeItemsGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.items.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeItemsGetResponse struct {
-	TaobaokeItems []*TaobaokeItem `json:"taobaoke_items"`
-	TotalResults  int             `json:"total_results"`
-}
-
-type TaobaokeItemsGetResponseResult struct {
-	Response *TaobaokeItemsGetResponse `json:"taobaoke_items_get_response"`
-}
-
-/* 商品关联推荐。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeItemsRelateGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 分类id.推荐类型为5时cid不能为空。仅支持叶子类目ID，即通过taobao.itemcats.get获取到is_parent=false的cid。 */
-func (r *TaobaokeItemsRelateGetRequest) SetCid(value string) {
-	r.SetValue("cid", value)
-}
-
-/* 需返回的字段列表.可选值:num_iid,title,nick,pic_url,price,click_url,commission,ommission_rate,commission_num,commission_volume,shop_click_url,seller_credit_score,item_location,volume;字段之间用","分隔 */
-func (r *TaobaokeItemsRelateGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串.如果不传值,则默认是false */
-func (r *TaobaokeItemsRelateGetRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
-}
-
-/* 指定返回结果的最大条数.实际返回结果个数根据算法来确定,所以该值会小于或者等于该值 */
-func (r *TaobaokeItemsRelateGetRequest) SetMaxCount(value string) {
-	r.SetValue("max_count", value)
-}
-
-/* 推广者的淘宝会员昵称.注:指的是淘宝的会员登录名 */
-func (r *TaobaokeItemsRelateGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 淘宝客商品数字id.推荐类型为1,2,3时num_iid不能为空 */
-func (r *TaobaokeItemsRelateGetRequest) SetNumIid(value string) {
-	r.SetValue("num_iid", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道 */
-func (r *TaobaokeItemsRelateGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20。第一次调用接口的用户，推荐该入参不要填写，使用nick=（淘宝账号）的方式去获取，以免出错。 */
-func (r *TaobaokeItemsRelateGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 点击串跳转类型，1：单品，2：单品中间页（无线暂无） */
-func (r *TaobaokeItemsRelateGetRequest) SetReferType(value string) {
-	r.SetValue("refer_type", value)
-}
-
-/* <p>推荐类型.</p>
-<p>1:同类商品推荐;此时必须得输入num_iid</p>
-<p>2:异类商品推荐;此时必须得输入num_iid</p>
-<p>3:同店商品推荐;此时必须得输入num_iid</p>
-<p>4:店铺热门推荐;此时必须得输入seller_id，这里的seller_id得通过<a href="http://api.taobao.com/apidoc/api.htm?path=cid:38-apiId:10449">taobao.taobaoke.shops.get</a>
-跟<a href="http://api.taobao.com/apidoc/api.htm?path=cid:38-apiId:21419">taobao.taobaoke.widget.shops.convert</a>这两个接口去获取user_id字段</p>
-<p>5:类目热门推荐;此时必须得输入cid</p> */
-func (r *TaobaokeItemsRelateGetRequest) SetRelateType(value string) {
-	r.SetValue("relate_type", value)
-}
-
-/* 卖家的用户id，这里的seller_id得通过<a href="http://api.taobao.com/apidoc/api.htm?path=cid:38-apiId:10449">taobao.taobaoke.shops.get</a>
-跟<a href="http://api.taobao.com/apidoc/api.htm?path=cid:38-apiId:21419">taobao.taobaoke.widget.shops.convert</a>这两个接口去获取user_id字段。
-注：推荐类型为4时seller_id不能为空 */
-func (r *TaobaokeItemsRelateGetRequest) SetSellerId(value string) {
-	r.SetValue("seller_id", value)
-}
-
-/* 店铺类型.默认all,商城:b,集市:c */
-func (r *TaobaokeItemsRelateGetRequest) SetShopType(value string) {
-	r.SetValue("shop_type", value)
-}
-
-/* default(默认排序,关联推荐相关度),price_desc(价格从高到低), price_asc(价格从低到高),commissionRate_desc(佣金比率从高到低), commissionRate_asc(佣金比率从低到高), commissionNum_desc(成交量成高到低), commissionNum_asc(成交量从低到高) */
-func (r *TaobaokeItemsRelateGetRequest) SetSort(value string) {
-	r.SetValue("sort", value)
-}
-
-/* 商品数字ID(带有跟踪效果) */
-func (r *TaobaokeItemsRelateGetRequest) SetTrackIid(value string) {
-	r.SetValue("track_iid", value)
-}
-
-func (r *TaobaokeItemsRelateGetRequest) GetResponse(accessToken string) (*TaobaokeItemsRelateGetResponse, []byte, error) {
-	var resp TaobaokeItemsRelateGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.items.relate.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeItemsRelateGetResponse struct {
-	TaobaokeItems []*TaobaokeItem `json:"taobaoke_items"`
-	TotalResults  int             `json:"total_results"`
-}
-
-type TaobaokeItemsRelateGetResponseResult struct {
-	Response *TaobaokeItemsRelateGetResponse `json:"taobaoke_items_relate_get_response"`
-}
-
-/* 淘宝客关键词搜索URL.
-<p>由于受到<a href="http://club.alimama.com/read-htm-tid-3133847.html">淘宝联盟pid升级规则</a>影响，该接口后续可能会下线。建议直接使用拼链接的方式（塞入完整的pid）来获取搜索结果，而不是调用该接口来获取结果</p>
-<p>拼接的格式为：http://s8.taobao.com/browse/search_auction.htm?q=$url_encode($keywords)&pid=mm_xxx_xxx_xxx&search_type=auction&commend=all&at_topsearch=1&unid=$outer_code&spm=2014.$appkey.$apmc.$spmd</p>
-<p>q指关键字，url_encode是编码方法（具体根据不同编程语言而定）</p>
-<p>pid是你自己淘宝账号的完整的pid，登录alimama.com去获取</p>
-<p>unid是推广渠道。跟调用api设置outer_code效果相同</p>
-<p>spm可以到文档搜索“spm”了解下</p>
-<p></p>
-<p></p>
-<p></p> */
-type TaobaokeListurlGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 推广者的淘宝会员昵称.注：这里指的是淘宝的登录会员名 */
-func (r *TaobaokeListurlGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeListurlGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20 */
-func (r *TaobaokeListurlGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 关键词 */
-func (r *TaobaokeListurlGetRequest) SetQ(value string) {
+/* 查询词 */
+func (r *TbkItemGetRequest) SetQ(value string) {
 	r.SetValue("q", value)
 }
 
-func (r *TaobaokeListurlGetRequest) GetResponse(accessToken string) (*TaobaokeListurlGetResponse, []byte, error) {
-	var resp TaobaokeListurlGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.listurl.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeListurlGetResponse struct {
-	TaobaokeItem *TaobaokeItem `json:"taobaoke_item"`
-}
-
-type TaobaokeListurlGetResponseResult struct {
-	Response *TaobaokeListurlGetResponse `json:"taobaoke_listurl_get_response"`
-}
-
-/* 查询卖家是否支持返利 */
-type TaobaokeRebateAuthorizeGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 卖家淘宝会员昵称.注：指的是淘宝的会员登录名 */
-func (r *TaobaokeRebateAuthorizeGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 商品数字ID */
-func (r *TaobaokeRebateAuthorizeGetRequest) SetNumIid(value string) {
-	r.SetValue("num_iid", value)
-}
-
-/* 卖家淘宝会员数字ID. */
-func (r *TaobaokeRebateAuthorizeGetRequest) SetSellerId(value string) {
-	r.SetValue("seller_id", value)
-}
-
-func (r *TaobaokeRebateAuthorizeGetRequest) GetResponse(accessToken string) (*TaobaokeRebateAuthorizeGetResponse, []byte, error) {
-	var resp TaobaokeRebateAuthorizeGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.rebate.authorize.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeRebateAuthorizeGetResponse struct {
-	Rebate bool `json:"rebate"`
-}
-
-type TaobaokeRebateAuthorizeGetResponseResult struct {
-	Response *TaobaokeRebateAuthorizeGetResponse `json:"taobaoke_rebate_authorize_get_response"`
-}
-
-/* 根据输入开始时间，时间跨度，查询90天以内订单成功且支持返利淘宝客报表 */
-type TaobaokeRebateReportGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 需返回的字段列表.可选值:TaobaokePayment淘宝客订单构体中的所有字段;字段之间用","分隔. */
-func (r *TaobaokeRebateReportGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 当前页数 */
-func (r *TaobaokeRebateReportGetRequest) SetPageNo(value string) {
-	r.SetValue("page_no", value)
-}
-
-/* 每页返回结果数，最小每页40条，默认每页40条，最大每页100条 */
-func (r *TaobaokeRebateReportGetRequest) SetPageSize(value string) {
-	r.SetValue("page_size", value)
-}
-
-/* 查询报表的时间跨度，单位秒。
-以用户输入的start_time时间为起始时间，start_time+span为结束时间，查询该时间段内的订单。span最小值为60秒，最大值为600秒，默认值为60秒 */
-func (r *TaobaokeRebateReportGetRequest) SetSpan(value string) {
-	r.SetValue("span", value)
-}
-
-/* 需要查询报表的开始日期，有效的日期为从当前日期开始起90天以内的订单 */
-func (r *TaobaokeRebateReportGetRequest) SetStartTime(value string) {
-	r.SetValue("start_time", value)
-}
-
-func (r *TaobaokeRebateReportGetRequest) GetResponse(accessToken string) (*TaobaokeRebateReportGetResponse, []byte, error) {
-	var resp TaobaokeRebateReportGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.rebate.report.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeRebateReportGetResponse struct {
-	TaobaokePayments []*TaobaokePayment `json:"taobaoke_payments"`
-}
-
-type TaobaokeRebateReportGetResponseResult struct {
-	Response *TaobaokeRebateReportGetResponse `json:"taobaoke_rebate_report_get_response"`
-}
-
-/* 淘客报表查询，报表接口只能获取到该appkey对应的创建者（淘宝账号）的推广数据。目前只支持获取订单成功的报表。订单创建、订单失效、退款订单请直接在www.alimama.com后台进行查询。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http:http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeReportGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 买家确认收货时间，有效的日期为最近3个月内的某一天，格式为:yyyyMMdd,如20090520. */
-func (r *TaobaokeReportGetRequest) SetDate(value string) {
-	r.SetValue("date", value)
-}
-
-/* 需返回的字段列表.可选值:TaobaokeReportMember淘宝客报表成员结构体中的所有字段;字段之间用","分隔. */
-func (r *TaobaokeReportGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 当前页数.只能获取1-499页数据. */
-func (r *TaobaokeReportGetRequest) SetPageNo(value string) {
-	r.SetValue("page_no", value)
-}
-
-/* 每页返回结果数,默认是40条.最大每页100 */
-func (r *TaobaokeReportGetRequest) SetPageSize(value string) {
-	r.SetValue("page_size", value)
-}
-
-func (r *TaobaokeReportGetRequest) GetResponse(accessToken string) (*TaobaokeReportGetResponse, []byte, error) {
-	var resp TaobaokeReportGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.report.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeReportGetResponse struct {
-	TaobaokeReport *TaobaokeReport `json:"taobaoke_report"`
-}
-
-type TaobaokeReportGetResponseResult struct {
-	Response *TaobaokeReportGetResponse `json:"taobaoke_report_get_response"`
-}
-
-/* 提供对参加了淘客推广的店铺的搜索。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeShopsGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 店铺前台展示类目id，可以通过taobao.shopcats.list.get获取。 */
-func (r *TaobaokeShopsGetRequest) SetCid(value string) {
-	r.SetValue("cid", value)
-}
-
-/* 店铺商品数查询结束值。需要跟start_auctioncount同时设置才生效，只设置该值不生效。 */
-func (r *TaobaokeShopsGetRequest) SetEndAuctioncount(value string) {
-	r.SetValue("end_auctioncount", value)
-}
-
-/* 店铺佣金比例查询结束值 */
-func (r *TaobaokeShopsGetRequest) SetEndCommissionrate(value string) {
-	r.SetValue("end_commissionrate", value)
-}
-
-/* 店铺掌柜信用等级查询结束
-店铺的信用等级总共为20级 1-5:1heart-5heart;6-10:1diamond-5diamond;11-15:1crown-5crown;16-20:1goldencrown-5goldencrown */
-func (r *TaobaokeShopsGetRequest) SetEndCredit(value string) {
-	r.SetValue("end_credit", value)
-}
-
-/* 店铺累计推广数查询结束值 */
-func (r *TaobaokeShopsGetRequest) SetEndTotalaction(value string) {
-	r.SetValue("end_totalaction", value)
-}
-
-/* 需要返回的字段，目前包括如下字段 user_id click_url shop_title commission_rate seller_credit shop_type auction_count total_auction */
-func (r *TaobaokeShopsGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串.如果不传值,则默认是false. */
-func (r *TaobaokeShopsGetRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
-}
-
-/* 店铺主题关键字查询 */
-func (r *TaobaokeShopsGetRequest) SetKeyword(value string) {
-	r.SetValue("keyword", value)
-}
-
-/* 淘宝用户昵称，注：指的是淘宝的会员登录名.如果昵称错误,那么客户就收不到佣金.每个淘宝昵称都对应于一个pid，在这里输入要结算佣金的淘宝昵称，当推广的商品成功后，佣金会打入此输入的淘宝昵称的账户。具体的信息可以登入阿里妈妈的网站查看 */
-func (r *TaobaokeShopsGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 是否只显示商城店铺 */
-func (r *TaobaokeShopsGetRequest) SetOnlyMall(value string) {
-	r.SetValue("only_mall", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeShopsGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 页码.结果页1~99 */
-func (r *TaobaokeShopsGetRequest) SetPageNo(value string) {
-	r.SetValue("page_no", value)
-}
-
-/* 每页条数.最大每页40 */
-func (r *TaobaokeShopsGetRequest) SetPageSize(value string) {
-	r.SetValue("page_size", value)
-}
-
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20。第一次调用接口的用户，推荐该入参不要填写，使用nick=（淘宝账号）的方式去获取，以免出错。 */
-func (r *TaobaokeShopsGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 排序字段。目前支持的排序字段有：
-commission_rate，auction_count，total_auction。必须输入这三个任意值，否则排序无效 */
-func (r *TaobaokeShopsGetRequest) SetSortField(value string) {
-	r.SetValue("sort_field", value)
-}
-
-/* 排序类型.必须输入desc,asc任一值，否则无效
-desc-降序,asc-升序 */
-func (r *TaobaokeShopsGetRequest) SetSortType(value string) {
-	r.SetValue("sort_type", value)
-}
-
-/* 店铺宝贝数查询开始值。需要跟end_auctioncount同时设置才生效，只设置该值不生效。 */
-func (r *TaobaokeShopsGetRequest) SetStartAuctioncount(value string) {
-	r.SetValue("start_auctioncount", value)
-}
-
-/* 店铺佣金比例查询开始值，注意佣金比例是x10000的整数.50表示0.5% */
-func (r *TaobaokeShopsGetRequest) SetStartCommissionrate(value string) {
-	r.SetValue("start_commissionrate", value)
-}
-
-/* 店铺掌柜信用等级起始
-店铺的信用等级总共为20级 1-5:1heart-5heart;6-10:1diamond-5diamond;11-15:1crown-5crown;16-20:1goldencrown-5goldencrown */
-func (r *TaobaokeShopsGetRequest) SetStartCredit(value string) {
-	r.SetValue("start_credit", value)
-}
-
-/* 店铺累计推广量开始值 */
-func (r *TaobaokeShopsGetRequest) SetStartTotalaction(value string) {
-	r.SetValue("start_totalaction", value)
-}
-
-func (r *TaobaokeShopsGetRequest) GetResponse(accessToken string) (*TaobaokeShopsGetResponse, []byte, error) {
-	var resp TaobaokeShopsGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.shops.get", &resp)
-	if err != nil {
-		return nil, data, err
-	}
-	return resp.Response, data, err
-}
-
-type TaobaokeShopsGetResponse struct {
-	TaobaokeShops []*TaobaokeShop `json:"taobaoke_shops"`
-	TotalResults  int             `json:"total_results"`
-}
-
-type TaobaokeShopsGetResponseResult struct {
-	Response *TaobaokeShopsGetResponse `json:"taobaoke_shops_get_response"`
-}
-
-/* 淘宝客店铺关联推荐。
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeShopsRelateGetRequest struct {
-	open_taobao.TaobaoMethodRequest
-}
-
-/* 需返回的字段列表.可选值:TaobaokeShop淘宝客商品结构体中的user_id,seller_nick,shop_id,shop_title,seller_credit,shop_type,commission_rate,click_url,total_auction,auction_count,字段之间用","分隔 */
-func (r *TaobaokeShopsRelateGetRequest) SetFields(value string) {
-	r.SetValue("fields", value)
-}
-
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串,如果不传值,则默认是false */
-func (r *TaobaokeShopsRelateGetRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
-}
-
-/* 指定返回结果的最大条数,实际返回结果个数根据算法来确定 */
-func (r *TaobaokeShopsRelateGetRequest) SetMaxCount(value string) {
-	r.SetValue("max_count", value)
-}
-
-/* 淘宝用户昵称.注:指的是淘宝的会员登录名.如果昵称错误,那么客户就收不到佣金.每个淘宝昵称都对应于一个pid,在这里输入要结算佣金的淘宝昵称,当推广的商品成功后,佣金会打入此输入的淘宝昵称的账户.具体的信息可以登入阿里妈妈的网站查看 */
-func (r *TaobaokeShopsRelateGetRequest) SetNick(value string) {
-	r.SetValue("nick", value)
-}
-
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道 */
-func (r *TaobaokeShopsRelateGetRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
-}
-
-/* 用户的pid,必须是mm_xxxx_0_0这种格式中间的"xxxx". 注意nick和pid至少需要传递一个,如果2个都传了,将以pid为准,且pid的最大长度是20。第一次调用接口的用户，推荐该入参不要填写，使用nick=（淘宝账号）的方式去获取，以免出错。 */
-func (r *TaobaokeShopsRelateGetRequest) SetPid(value string) {
-	r.SetValue("pid", value)
-}
-
-/* 卖家id.seller_id和seller_nick不能同时为空,如果都有值,则以seller_id为主 */
-func (r *TaobaokeShopsRelateGetRequest) SetSellerId(value string) {
-	r.SetValue("seller_id", value)
-}
-
-/* 卖家昵称 */
-func (r *TaobaokeShopsRelateGetRequest) SetSellerNick(value string) {
-	r.SetValue("seller_nick", value)
-}
-
-/* 店铺类型.所有:all,商城:b,集市:c */
-func (r *TaobaokeShopsRelateGetRequest) SetShopType(value string) {
-	r.SetValue("shop_type", value)
-}
-
-/* default(默认排序,关联推荐相关度),commissionRate_desc(佣金比率从高到低), commissionRate_asc(佣金比率从低到高),credit_desc(信用等级从高到低), credit_asc(信用等级从低到高) */
-func (r *TaobaokeShopsRelateGetRequest) SetSort(value string) {
+/* 排序_des（降序），排序_asc（升序），销量（total_sales），淘客佣金比率（tk_rate）， 累计推广量（tk_total_sales），总支出佣金（tk_total_commi） */
+func (r *TbkItemGetRequest) SetSort(value string) {
 	r.SetValue("sort", value)
 }
 
-func (r *TaobaokeShopsRelateGetRequest) GetResponse(accessToken string) (*TaobaokeShopsRelateGetResponse, []byte, error) {
-	var resp TaobaokeShopsRelateGetResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.shops.relate.get", &resp)
+/* 折扣价范围下限，单位：元 */
+func (r *TbkItemGetRequest) SetStartPrice(value string) {
+	r.SetValue("start_price", value)
+}
+
+/* 淘客佣金比率上限，如：1234表示12.34% */
+func (r *TbkItemGetRequest) SetStartTkRate(value string) {
+	r.SetValue("start_tk_rate", value)
+}
+
+func (r *TbkItemGetRequest) GetResponse(accessToken string) (*TbkItemGetResponse, []byte, error) {
+	var resp TbkItemGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.item.get", &resp)
 	if err != nil {
 		return nil, data, err
 	}
 	return resp.Response, data, err
 }
 
-type TaobaokeShopsRelateGetResponse struct {
-	TaobaokeShops []*TaobaokeShop `json:"taobaoke_shops"`
-	TotalResults  int             `json:"total_results"`
+type TbkItemGetResponse struct {
+	Results      []*NTbkItem `json:"results"`
+	TotalResults int         `json:"total_results"`
 }
 
-type TaobaokeShopsRelateGetResponseResult struct {
-	Response *TaobaokeShopsRelateGetResponse `json:"taobaoke_shops_relate_get_response"`
+type TbkItemGetResponseResult struct {
+	Response *TbkItemGetResponse `json:"tbk_item_get_response"`
 }
 
-/* 淘客商品转换，该接口只支持js方式去调用，具体的调用方式参考文档【http://open.taobao.com/doc/detail.htm?id=101372】
-
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeWidgetItemsConvertRequest struct {
+/* 枚举出淘宝客在淘宝联盟超级搜索，特色频道中，创建的选品库列表 */
+type TbkUatmFavoritesGetRequest struct {
 	open_taobao.TaobaoMethodRequest
 }
 
-/* 需返回的字段列表.可选值:num_iid,title,nick,pic_url,price,click_url,commission,commission_rate,commission_num,commission_volume,shop_click_url,seller_credit_score,item_location,volume
-;字段之间用","分隔. */
-func (r *TaobaokeWidgetItemsConvertRequest) SetFields(value string) {
+/* 需要返回的字段列表，不能为空，字段名之间使用逗号分隔 */
+func (r *TbkUatmFavoritesGetRequest) SetFields(value string) {
 	r.SetValue("fields", value)
 }
 
-/* 标识一个应用是否来自无线或者手机应用,如果是true，则会使用其他规则加密点击串.如果不传值,则默认是false. */
-func (r *TaobaokeWidgetItemsConvertRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
+/* 第几页，从1开始计数 */
+func (r *TbkUatmFavoritesGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
 }
 
-/* 淘宝客商品数字id串.最大输入40个.格式如:"value1,value2,value3" 用" , "号分隔商品数字id */
-func (r *TaobaokeWidgetItemsConvertRequest) SetNumIids(value string) {
-	r.SetValue("num_iids", value)
+/* 默认20，页大小，即每一页的活动个数 */
+func (r *TbkUatmFavoritesGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
 }
 
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeWidgetItemsConvertRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
+/* 默认值-1；选品库类型，1：普通选品组，2：高佣选品组，-1，同时输出所有类型的选品组 */
+func (r *TbkUatmFavoritesGetRequest) SetType(value string) {
+	r.SetValue("type", value)
 }
 
-/* 商品track_iid串（带有追踪效果的商品id),最大输入40个,与num_iids必填其一 */
-func (r *TaobaokeWidgetItemsConvertRequest) SetTrackIids(value string) {
-	r.SetValue("track_iids", value)
-}
-
-func (r *TaobaokeWidgetItemsConvertRequest) GetResponse(accessToken string) (*TaobaokeWidgetItemsConvertResponse, []byte, error) {
-	var resp TaobaokeWidgetItemsConvertResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.widget.items.convert", &resp)
+func (r *TbkUatmFavoritesGetRequest) GetResponse(accessToken string) (*TbkUatmFavoritesGetResponse, []byte, error) {
+	var resp TbkUatmFavoritesGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.uatm.favorites.get", &resp)
 	if err != nil {
 		return nil, data, err
 	}
 	return resp.Response, data, err
 }
 
-type TaobaokeWidgetItemsConvertResponse struct {
-	TaobaokeItems []*TaobaokeItem `json:"taobaoke_items"`
-	TotalResults  int             `json:"total_results"`
+type TbkUatmFavoritesGetResponse struct {
+	Results      []*TbkFavorites `json:"results"`
+	TotalResults int             `json:"total_results"`
 }
 
-type TaobaokeWidgetItemsConvertResponseResult struct {
-	Response *TaobaokeWidgetItemsConvertResponse `json:"taobaoke_widget_items_convert_response"`
+type TbkUatmFavoritesGetResponseResult struct {
+	Response *TbkUatmFavoritesGetResponse `json:"tbk_uatm_favorites_get_response"`
 }
 
-/* 淘客店铺转换，该接口只支持js方式去调用，具体的调用方式参考文档【http://open.taobao.com/doc/detail.htm?id=101372】
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeWidgetShopsConvertRequest struct {
+/* 拉新活动汇总API */
+type TbkScNewuserOrderSumRequest struct {
 	open_taobao.TaobaoMethodRequest
 }
 
-/* 需返回的字段列表.可选值:TaobaokeShop淘宝客商品结构体中的user_id,shop_title,click_url,commission_rate;字段之间用","分隔. */
-func (r *TaobaokeWidgetShopsConvertRequest) SetFields(value string) {
+/* 活动ID，现有活动id包括： 2月手淘拉新：119013_2；3月手淘拉新：119013_3； */
+func (r *TbkScNewuserOrderSumRequest) SetActivityId(value string) {
+	r.SetValue("activity_id", value)
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkScNewuserOrderSumRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 页码，默认1 */
+func (r *TbkScNewuserOrderSumRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkScNewuserOrderSumRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 结算月份，需按照活动的结算月份传入具体的值：201807 */
+func (r *TbkScNewuserOrderSumRequest) SetSettleMonth(value string) {
+	r.SetValue("settle_month", value)
+}
+
+/* mm_xxx_xxx_xxx的第二位 */
+func (r *TbkScNewuserOrderSumRequest) SetSiteId(value string) {
+	r.SetValue("site_id", value)
+}
+
+func (r *TbkScNewuserOrderSumRequest) GetResponse(accessToken string) (*TbkScNewuserOrderSumResponse, []byte, error) {
+	var resp TbkScNewuserOrderSumResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.sc.newuser.order.sum", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkScNewuserOrderSumResponse struct {
+	Results *Data `json:"results"`
+}
+
+type TbkScNewuserOrderSumResponseResult struct {
+	Response *TbkScNewuserOrderSumResponse `json:"tbk_sc_newuser_order_sum_response"`
+}
+
+/* 淘宝客店铺关联推荐查询 */
+type TbkShopRecommendGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 返回数量，默认20，最大值40 */
+func (r *TbkShopRecommendGetRequest) SetCount(value string) {
+	r.SetValue("count", value)
+}
+
+/* 需返回的字段列表 */
+func (r *TbkShopRecommendGetRequest) SetFields(value string) {
 	r.SetValue("fields", value)
 }
 
-/* 标识一个应用是否来在无线或者手机应用,如果是true则会使用其他规则加密点击串.如果不传值,则默认是false. */
-func (r *TaobaokeWidgetShopsConvertRequest) SetIsMobile(value string) {
-	r.SetValue("is_mobile", value)
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkShopRecommendGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
 }
 
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道. */
-func (r *TaobaokeWidgetShopsConvertRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
+/* 卖家Id */
+func (r *TbkShopRecommendGetRequest) SetUserId(value string) {
+	r.SetValue("user_id", value)
 }
 
-/* 卖家昵称串.最大输入10个.格式如:"value1,value2,value3" 用" , "号分隔。 */
-func (r *TaobaokeWidgetShopsConvertRequest) SetSellerNicks(value string) {
-	r.SetValue("seller_nicks", value)
-}
-
-func (r *TaobaokeWidgetShopsConvertRequest) GetResponse(accessToken string) (*TaobaokeWidgetShopsConvertResponse, []byte, error) {
-	var resp TaobaokeWidgetShopsConvertResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.widget.shops.convert", &resp)
+func (r *TbkShopRecommendGetRequest) GetResponse(accessToken string) (*TbkShopRecommendGetResponse, []byte, error) {
+	var resp TbkShopRecommendGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.shop.recommend.get", &resp)
 	if err != nil {
 		return nil, data, err
 	}
 	return resp.Response, data, err
 }
 
-type TaobaokeWidgetShopsConvertResponse struct {
-	TaobaokeShops []*TaobaokeShop `json:"taobaoke_shops"`
+type TbkShopRecommendGetResponse struct {
+	Results []*NTbkShop `json:"results"`
 }
 
-type TaobaokeWidgetShopsConvertResponseResult struct {
-	Response *TaobaokeWidgetShopsConvertResponse `json:"taobaoke_widget_shops_convert_response"`
+type TbkShopRecommendGetResponseResult struct {
+	Response *TbkShopRecommendGetResponse `json:"tbk_shop_recommend_get_response"`
 }
 
-/* 活动推广API可以把天猫、聚划算、淘宝旅行、淘宝游戏等平台的活动链接转换为淘宝客推广链接，该接口只支持js方式去调用，具体的调用方式参考文档【http://open.taobao.com/doc/detail.htm?id=101372】
-<p>淘宝客应用、网站接入的过程中，难免会遇到问题，这里对从接入到线上运营的各个环节最常碰到的问题，做了汇总，帮助开发者提高接入的效率。 </p> <p>一、淘宝客网站应用创建流程：<a href="http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028">http://open.taobao.com/doc/detail.htm?spm=0.0.0.34.b1f9de&id=1028</a></p> <p>二、淘宝客API结合实际使用场景的介绍：<a href="http://open.taobao.com/doc/detail.htm?id=1014">http://open.taobao.com/doc/detail.htm?id=1014</a></p> <p>三、淘宝客网站官方推荐的架构：<a href="http://open.taobao.com/doc/detail.htm?id=1011">http://open.taobao.com/doc/detail.htm?id=1011</a></p> <p>四、淘宝客最常见的几个问题以及解决方案汇总：<a href="http://open.taobao.com/doc/detail.htm?id=1005">http://open.taobao.com/doc/detail.htm?id=1005</a></p> */
-type TaobaokeWidgetUrlConvertRequest struct {
+/* 拉新活动汇总API */
+type TbkDgNewuserOrderSumRequest struct {
 	open_taobao.TaobaoMethodRequest
 }
 
-/* 自定义输入串.格式:英文和数字组成;长度不能大于12个字符,区分不同的推广渠道,如:bbs,表示bbs为推广渠道;blog,表示blog为推广渠道 */
-func (r *TaobaokeWidgetUrlConvertRequest) SetOuterCode(value string) {
-	r.SetValue("outer_code", value)
+/* 活动id， 活动名称与活动ID列表，请参见https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8599277 */
+func (r *TbkDgNewuserOrderSumRequest) SetActivityId(value string) {
+	r.SetValue("activity_id", value)
 }
 
-/* 需要转化为淘客链接的url，可以把天猫、聚划算、淘宝旅行、淘宝游戏等平台的活动链接转换为淘宝客推广链接 */
-func (r *TaobaokeWidgetUrlConvertRequest) SetUrl(value string) {
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkDgNewuserOrderSumRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 页码，默认1 */
+func (r *TbkDgNewuserOrderSumRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkDgNewuserOrderSumRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 结算月份 */
+func (r *TbkDgNewuserOrderSumRequest) SetSettleMonth(value string) {
+	r.SetValue("settle_month", value)
+}
+
+/* mm_xxx_xxx_xxx的第二位 */
+func (r *TbkDgNewuserOrderSumRequest) SetSiteId(value string) {
+	r.SetValue("site_id", value)
+}
+
+func (r *TbkDgNewuserOrderSumRequest) GetResponse(accessToken string) (*TbkDgNewuserOrderSumResponse, []byte, error) {
+	var resp TbkDgNewuserOrderSumResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.dg.newuser.order.sum", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkDgNewuserOrderSumResponse struct {
+	Results *Data `json:"results"`
+}
+
+type TbkDgNewuserOrderSumResponseResult struct {
+	Response *TbkDgNewuserOrderSumResponse `json:"tbk_dg_newuser_order_sum_response"`
+}
+
+/* 指定选品库id，获取该选品库的宝贝信息 */
+type TbkUatmFavoritesItemGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 推广位id，需要在淘宝联盟后台创建；且属于appkey备案的媒体id（siteid），如何获取adzoneid，请参考，http://club.alimama.com/read-htm-tid-6333967.html?spm=0.0.0.0.msZnx5 */
+func (r *TbkUatmFavoritesItemGetRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 选品库的id */
+func (r *TbkUatmFavoritesItemGetRequest) SetFavoritesId(value string) {
+	r.SetValue("favorites_id", value)
+}
+
+/* 需要输出则字段列表，逗号分隔 */
+func (r *TbkUatmFavoritesItemGetRequest) SetFields(value string) {
+	r.SetValue("fields", value)
+}
+
+/* 第几页，默认：1，从1开始计数 */
+func (r *TbkUatmFavoritesItemGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkUatmFavoritesItemGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkUatmFavoritesItemGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
+}
+
+/* 自定义输入串，英文和数字组成，长度不能大于12个字符，区分不同的推广渠道 */
+func (r *TbkUatmFavoritesItemGetRequest) SetUnid(value string) {
+	r.SetValue("unid", value)
+}
+
+func (r *TbkUatmFavoritesItemGetRequest) GetResponse(accessToken string) (*TbkUatmFavoritesItemGetResponse, []byte, error) {
+	var resp TbkUatmFavoritesItemGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.uatm.favorites.item.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkUatmFavoritesItemGetResponse struct {
+	Results      []*UatmTbkItem `json:"results"`
+	TotalResults int            `json:"total_results"`
+}
+
+type TbkUatmFavoritesItemGetResponseResult struct {
+	Response *TbkUatmFavoritesItemGetResponse `json:"tbk_uatm_favorites_item_get_response"`
+}
+
+/* 通过指定定向招商活动id，获取该活动id下的宝贝信息；
+宝贝信息中包含了适用于定向招商活动的高佣金淘客点击串; 注意，只能获取已经开始的定向招商id下面的宝贝信息，当天新开始的定向招商活动在凌晨2点生效； */
+type TbkUatmEventItemGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 推广位id，需要在淘宝联盟后台创建；且属于appkey对应的备案媒体id（siteid），如何获取adzoneid，请参考：http://club.alimama.com/read-htm-tid-6333967.html?spm=0.0.0.0.msZnx5 */
+func (r *TbkUatmEventItemGetRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 招商活动id */
+func (r *TbkUatmEventItemGetRequest) SetEventId(value string) {
+	r.SetValue("event_id", value)
+}
+
+/* 需要输出则字段列表，逗号分隔 */
+func (r *TbkUatmEventItemGetRequest) SetFields(value string) {
+	r.SetValue("fields", value)
+}
+
+/* 第几页，默认：１，从1开始计数 */
+func (r *TbkUatmEventItemGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkUatmEventItemGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkUatmEventItemGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
+}
+
+/* 自定义输入串，英文和数字组成，长度不能大于12个字符，区分不同的推广渠道 */
+func (r *TbkUatmEventItemGetRequest) SetUnid(value string) {
+	r.SetValue("unid", value)
+}
+
+func (r *TbkUatmEventItemGetRequest) GetResponse(accessToken string) (*TbkUatmEventItemGetResponse, []byte, error) {
+	var resp TbkUatmEventItemGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.uatm.event.item.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkUatmEventItemGetResponse struct {
+	Results      []*UatmTbkItem `json:"results"`
+	TotalResults int            `json:"total_results"`
+}
+
+type TbkUatmEventItemGetResponseResult struct {
+	Response *TbkUatmEventItemGetResponse `json:"tbk_uatm_event_item_get_response"`
+}
+
+/* 淘宝客店铺查询 */
+type TbkShopGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 累计推广商品上限 */
+func (r *TbkShopGetRequest) SetEndAuctionCount(value string) {
+	r.SetValue("end_auction_count", value)
+}
+
+/* 淘客佣金比率上限，1~10000 */
+func (r *TbkShopGetRequest) SetEndCommissionRate(value string) {
+	r.SetValue("end_commission_rate", value)
+}
+
+/* 信用等级上限，1~20 */
+func (r *TbkShopGetRequest) SetEndCredit(value string) {
+	r.SetValue("end_credit", value)
+}
+
+/* 店铺商品总数上限 */
+func (r *TbkShopGetRequest) SetEndTotalAction(value string) {
+	r.SetValue("end_total_action", value)
+}
+
+/* 需返回的字段列表 */
+func (r *TbkShopGetRequest) SetFields(value string) {
+	r.SetValue("fields", value)
+}
+
+/* 是否商城的店铺，设置为true表示该是属于淘宝商城的店铺，设置为false或不设置表示不判断这个属性 */
+func (r *TbkShopGetRequest) SetIsTmall(value string) {
+	r.SetValue("is_tmall", value)
+}
+
+/* 第几页，默认1，1~100 */
+func (r *TbkShopGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkShopGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkShopGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
+}
+
+/* 查询词 */
+func (r *TbkShopGetRequest) SetQ(value string) {
+	r.SetValue("q", value)
+}
+
+/* 排序_des（降序），排序_asc（升序），佣金比率（commission_rate）， 商品数量（auction_count），销售总数量（total_auction） */
+func (r *TbkShopGetRequest) SetSort(value string) {
+	r.SetValue("sort", value)
+}
+
+/* 累计推广商品下限 */
+func (r *TbkShopGetRequest) SetStartAuctionCount(value string) {
+	r.SetValue("start_auction_count", value)
+}
+
+/* 淘客佣金比率下限，1~10000 */
+func (r *TbkShopGetRequest) SetStartCommissionRate(value string) {
+	r.SetValue("start_commission_rate", value)
+}
+
+/* 信用等级下限，1~20 */
+func (r *TbkShopGetRequest) SetStartCredit(value string) {
+	r.SetValue("start_credit", value)
+}
+
+/* 店铺商品总数下限 */
+func (r *TbkShopGetRequest) SetStartTotalAction(value string) {
+	r.SetValue("start_total_action", value)
+}
+
+func (r *TbkShopGetRequest) GetResponse(accessToken string) (*TbkShopGetResponse, []byte, error) {
+	var resp TbkShopGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.shop.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkShopGetResponse struct {
+	Results      []*NTbkShop `json:"results"`
+	TotalResults int         `json:"total_results"`
+}
+
+type TbkShopGetResponseResult struct {
+	Response *TbkShopGetResponse `json:"tbk_shop_get_response"`
+}
+
+/* 通用物料推荐，传入官方公布的物料id，可获取指定物料 */
+type TbkDgOptimusMaterialRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkDgOptimusMaterialRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 内容详情ID */
+func (r *TbkDgOptimusMaterialRequest) SetContentId(value string) {
+	r.SetValue("content_id", value)
+}
+
+/* 内容渠道信息 */
+func (r *TbkDgOptimusMaterialRequest) SetContentSource(value string) {
+	r.SetValue("content_source", value)
+}
+
+/* 设备号加密类型：MD5 */
+func (r *TbkDgOptimusMaterialRequest) SetDeviceEncrypt(value string) {
+	r.SetValue("device_encrypt", value)
+}
+
+/* 设备号类型：IMEI，或者IDFA，或者UTDID */
+func (r *TbkDgOptimusMaterialRequest) SetDeviceType(value string) {
+	r.SetValue("device_type", value)
+}
+
+/* 设备号加密后的值 */
+func (r *TbkDgOptimusMaterialRequest) SetDeviceValue(value string) {
+	r.SetValue("device_value", value)
+}
+
+/* 官方的物料Id(详细物料id见：https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8576096) */
+func (r *TbkDgOptimusMaterialRequest) SetMaterialId(value string) {
+	r.SetValue("material_id", value)
+}
+
+/* 第几页，默认：1 */
+func (r *TbkDgOptimusMaterialRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkDgOptimusMaterialRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+func (r *TbkDgOptimusMaterialRequest) GetResponse(accessToken string) (*TbkDgOptimusMaterialResponse, []byte, error) {
+	var resp TbkDgOptimusMaterialResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.dg.optimus.material", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkDgOptimusMaterialResponse struct {
+	ResultList []*MapData `json:"result_list"`
+}
+
+type TbkDgOptimusMaterialResponseResult struct {
+	Response *TbkDgOptimusMaterialResponse `json:"tbk_dg_optimus_material_response"`
+}
+
+/* 好券清单API【导购】 */
+type TbkDgItemCouponGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkDgItemCouponGetRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 后台类目ID，用,分割，最大10个，该ID可以通过taobao.itemcats.get接口获取到 */
+func (r *TbkDgItemCouponGetRequest) SetCat(value string) {
+	r.SetValue("cat", value)
+}
+
+/* 第几页，默认：1（当后台类目和查询词均不指定的时候，最多出10000个结果，即page_no*page_size不能超过10000；当指定类目或关键词的时候，则最多出100个结果） */
+func (r *TbkDgItemCouponGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkDgItemCouponGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 1：PC，2：无线，默认：1 */
+func (r *TbkDgItemCouponGetRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
+}
+
+/* 查询词 */
+func (r *TbkDgItemCouponGetRequest) SetQ(value string) {
+	r.SetValue("q", value)
+}
+
+func (r *TbkDgItemCouponGetRequest) GetResponse(accessToken string) (*TbkDgItemCouponGetResponse, []byte, error) {
+	var resp TbkDgItemCouponGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.dg.item.coupon.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkDgItemCouponGetResponse struct {
+	Results      []*TbkCoupon `json:"results"`
+	TotalResults int          `json:"total_results"`
+}
+
+type TbkDgItemCouponGetResponseResult struct {
+	Response *TbkDgItemCouponGetResponse `json:"tbk_dg_item_coupon_get_response"`
+}
+
+/* 拉新API */
+type TbkDgNewuserOrderGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 活动id， 活动名称与活动ID列表，请参见https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8599277 */
+func (r *TbkDgNewuserOrderGetRequest) SetActivityId(value string) {
+	r.SetValue("activity_id", value)
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkDgNewuserOrderGetRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 结束时间，当活动为淘宝活动，表示最晚结束时间；当活动为支付宝活动，表示最晚绑定时间；当活动为天猫活动，表示最晚领取红包的时间 */
+func (r *TbkDgNewuserOrderGetRequest) SetEndTime(value string) {
+	r.SetValue("end_time", value)
+}
+
+/* 页码，默认1 */
+func (r *TbkDgNewuserOrderGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkDgNewuserOrderGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 开始时间，当活动为淘宝活动，表示最早注册时间；当活动为支付宝活动，表示最早绑定时间；当活动为天猫活动，表示最早领取红包时间 */
+func (r *TbkDgNewuserOrderGetRequest) SetStartTime(value string) {
+	r.SetValue("start_time", value)
+}
+
+func (r *TbkDgNewuserOrderGetRequest) GetResponse(accessToken string) (*TbkDgNewuserOrderGetResponse, []byte, error) {
+	var resp TbkDgNewuserOrderGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.dg.newuser.order.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkDgNewuserOrderGetResponse struct {
+	Results *Results `json:"results"`
+}
+
+type TbkDgNewuserOrderGetResponseResult struct {
+	Response *TbkDgNewuserOrderGetResponse `json:"tbk_dg_newuser_order_get_response"`
+}
+
+/* 通用物料搜索API（导购） */
+type TbkDgMaterialOptionalRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkDgMaterialOptionalRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 后台类目ID，用,分割，最大10个，该ID可以通过taobao.itemcats.get接口获取到 */
+func (r *TbkDgMaterialOptionalRequest) SetCat(value string) {
+	r.SetValue("cat", value)
+}
+
+/* 设备号加密类型：MD5 */
+func (r *TbkDgMaterialOptionalRequest) SetDeviceEncrypt(value string) {
+	r.SetValue("device_encrypt", value)
+}
+
+/* 设备号类型：IMEI，或者IDFA，或者UTDID */
+func (r *TbkDgMaterialOptionalRequest) SetDeviceType(value string) {
+	r.SetValue("device_type", value)
+}
+
+/* 设备号加密后的值 */
+func (r *TbkDgMaterialOptionalRequest) SetDeviceValue(value string) {
+	r.SetValue("device_value", value)
+}
+
+/* KA媒体淘客佣金比率上限，如：1234表示12.34% */
+func (r *TbkDgMaterialOptionalRequest) SetEndKaTkRate(value string) {
+	r.SetValue("end_ka_tk_rate", value)
+}
+
+/* 折扣价范围上限，单位：元 */
+func (r *TbkDgMaterialOptionalRequest) SetEndPrice(value string) {
+	r.SetValue("end_price", value)
+}
+
+/* 淘客佣金比率上限，如：1234表示12.34% */
+func (r *TbkDgMaterialOptionalRequest) SetEndTkRate(value string) {
+	r.SetValue("end_tk_rate", value)
+}
+
+/* 是否有优惠券，设置为true表示该商品有优惠券，设置为false或不设置表示不判断这个属性 */
+func (r *TbkDgMaterialOptionalRequest) SetHasCoupon(value string) {
+	r.SetValue("has_coupon", value)
+}
+
+/* 好评率是否高于行业均值 */
+func (r *TbkDgMaterialOptionalRequest) SetIncludeGoodRate(value string) {
+	r.SetValue("include_good_rate", value)
+}
+
+/* 成交转化是否高于行业均值 */
+func (r *TbkDgMaterialOptionalRequest) SetIncludePayRate30(value string) {
+	r.SetValue("include_pay_rate_30", value)
+}
+
+/* 退款率是否低于行业均值 */
+func (r *TbkDgMaterialOptionalRequest) SetIncludeRfdRate(value string) {
+	r.SetValue("include_rfd_rate", value)
+}
+
+/* ip参数影响邮费获取，如果不传或者传入不准确，邮费无法精准提供 */
+func (r *TbkDgMaterialOptionalRequest) SetIp(value string) {
+	r.SetValue("ip", value)
+}
+
+/* 是否海外商品，设置为true表示该商品是属于海外商品，设置为false或不设置表示不判断这个属性 */
+func (r *TbkDgMaterialOptionalRequest) SetIsOverseas(value string) {
+	r.SetValue("is_overseas", value)
+}
+
+/* 是否商城商品，设置为true表示该商品是属于淘宝商城商品，设置为false或不设置表示不判断这个属性 */
+func (r *TbkDgMaterialOptionalRequest) SetIsTmall(value string) {
+	r.SetValue("is_tmall", value)
+}
+
+/* 所在地 */
+func (r *TbkDgMaterialOptionalRequest) SetItemloc(value string) {
+	r.SetValue("itemloc", value)
+}
+
+/* 官方的物料Id(详细物料id见：https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8576096)，不传时默认为2836 */
+func (r *TbkDgMaterialOptionalRequest) SetMaterialId(value string) {
+	r.SetValue("material_id", value)
+}
+
+/* 是否包邮，true表示包邮，空或false表示不限 */
+func (r *TbkDgMaterialOptionalRequest) SetNeedFreeShipment(value string) {
+	r.SetValue("need_free_shipment", value)
+}
+
+/* 是否加入消费者保障，true表示加入，空或false表示不限 */
+func (r *TbkDgMaterialOptionalRequest) SetNeedPrepay(value string) {
+	r.SetValue("need_prepay", value)
+}
+
+/* 牛皮癣程度，取值：1:不限，2:无，3:轻微 */
+func (r *TbkDgMaterialOptionalRequest) SetNpxLevel(value string) {
+	r.SetValue("npx_level", value)
+}
+
+/* 第几页，默认：１ */
+func (r *TbkDgMaterialOptionalRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkDgMaterialOptionalRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 链接形式：1：PC，2：无线，默认：１ */
+func (r *TbkDgMaterialOptionalRequest) SetPlatform(value string) {
+	r.SetValue("platform", value)
+}
+
+/* 查询词 */
+func (r *TbkDgMaterialOptionalRequest) SetQ(value string) {
+	r.SetValue("q", value)
+}
+
+/* 排序_des（降序），排序_asc（升序），销量（total_sales），淘客佣金比率（tk_rate）， 累计推广量（tk_total_sales），总支出佣金（tk_total_commi），价格（price） */
+func (r *TbkDgMaterialOptionalRequest) SetSort(value string) {
+	r.SetValue("sort", value)
+}
+
+/* 店铺dsr评分，筛选高于等于当前设置的店铺dsr评分的商品0-50000之间 */
+func (r *TbkDgMaterialOptionalRequest) SetStartDsr(value string) {
+	r.SetValue("start_dsr", value)
+}
+
+/* KA媒体淘客佣金比率下限，如：1234表示12.34% */
+func (r *TbkDgMaterialOptionalRequest) SetStartKaTkRate(value string) {
+	r.SetValue("start_ka_tk_rate", value)
+}
+
+/* 折扣价范围下限，单位：元 */
+func (r *TbkDgMaterialOptionalRequest) SetStartPrice(value string) {
+	r.SetValue("start_price", value)
+}
+
+/* 淘客佣金比率下限，如：1234表示12.34% */
+func (r *TbkDgMaterialOptionalRequest) SetStartTkRate(value string) {
+	r.SetValue("start_tk_rate", value)
+}
+
+func (r *TbkDgMaterialOptionalRequest) GetResponse(accessToken string) (*TbkDgMaterialOptionalResponse, []byte, error) {
+	var resp TbkDgMaterialOptionalResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.dg.material.optional", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkDgMaterialOptionalResponse struct {
+	ResultList   []*MapData `json:"result_list"`
+	TotalResults int        `json:"total_results"`
+}
+
+type TbkDgMaterialOptionalResponseResult struct {
+	Response *TbkDgMaterialOptionalResponse `json:"tbk_dg_material_optional_response"`
+}
+
+/* 枚举指定淘客自己发起的，*正在进行中的*定向招商的活动列表；每天新开始的定向招商活动，在凌晨2点后生效；即凌晨2点后可以枚举到当天开始的定向招商活动列表；时间过早不能取到当天开始的定向招商活动； */
+type TbkUatmEventGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 需要返回的字段列表，不能为空，字段名之间使用逗号分隔 */
+func (r *TbkUatmEventGetRequest) SetFields(value string) {
+	r.SetValue("fields", value)
+}
+
+/* 默认1，第几页，从1开始计数 */
+func (r *TbkUatmEventGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 默认20,  页大小，即每一页的活动个数 */
+func (r *TbkUatmEventGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+func (r *TbkUatmEventGetRequest) GetResponse(accessToken string) (*TbkUatmEventGetResponse, []byte, error) {
+	var resp TbkUatmEventGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.uatm.event.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkUatmEventGetResponse struct {
+	Results      []*TbkEvent `json:"results"`
+	TotalResults int         `json:"total_results"`
+}
+
+type TbkUatmEventGetResponseResult struct {
+	Response *TbkUatmEventGetResponse `json:"tbk_uatm_event_get_response"`
+}
+
+/* 通用物料推荐，传入官方公布的物料id，可获取指定物料 */
+type TbkScOptimusMaterialRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkScOptimusMaterialRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 内容详情ID */
+func (r *TbkScOptimusMaterialRequest) SetContentId(value string) {
+	r.SetValue("content_id", value)
+}
+
+/* 内容渠道信息 */
+func (r *TbkScOptimusMaterialRequest) SetContentSource(value string) {
+	r.SetValue("content_source", value)
+}
+
+/* 设备号加密类型：MD5 */
+func (r *TbkScOptimusMaterialRequest) SetDeviceEncrypt(value string) {
+	r.SetValue("device_encrypt", value)
+}
+
+/* 设备号加密后的值 */
+func (r *TbkScOptimusMaterialRequest) SetDeviceType(value string) {
+	r.SetValue("device_type", value)
+}
+
+/* 设备号类型：IMEI，或者IDFA，或者UTDID */
+func (r *TbkScOptimusMaterialRequest) SetDeviceValue(value string) {
+	r.SetValue("device_value", value)
+}
+
+/* 官方的物料Id(详细物料id见：https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8576096) */
+func (r *TbkScOptimusMaterialRequest) SetMaterialId(value string) {
+	r.SetValue("material_id", value)
+}
+
+/* 第几页，默认：1 */
+func (r *TbkScOptimusMaterialRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkScOptimusMaterialRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* mm_xxx_xxx_xxx的第二位 */
+func (r *TbkScOptimusMaterialRequest) SetSiteId(value string) {
+	r.SetValue("site_id", value)
+}
+
+func (r *TbkScOptimusMaterialRequest) GetResponse(accessToken string) (*TbkScOptimusMaterialResponse, []byte, error) {
+	var resp TbkScOptimusMaterialResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.sc.optimus.material", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkScOptimusMaterialResponse struct {
+	ResultList []*MapData `json:"result_list"`
+}
+
+type TbkScOptimusMaterialResponseResult struct {
+	Response *TbkScOptimusMaterialResponse `json:"tbk_sc_optimus_material_response"`
+}
+
+/* 阿里妈妈推广券信息查询。传入商品ID+券ID，或者传入me参数，均可查询券信息。 */
+type TbkCouponGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 券ID */
+func (r *TbkCouponGetRequest) SetActivityId(value string) {
+	r.SetValue("activity_id", value)
+}
+
+/* 商品ID */
+func (r *TbkCouponGetRequest) SetItemId(value string) {
+	r.SetValue("item_id", value)
+}
+
+/* 带券ID与商品ID的加密串 */
+func (r *TbkCouponGetRequest) SetMe(value string) {
+	r.SetValue("me", value)
+}
+
+func (r *TbkCouponGetRequest) GetResponse(accessToken string) (*TbkCouponGetResponse, []byte, error) {
+	var resp TbkCouponGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.coupon.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkCouponGetResponse struct {
+	Data *MapData `json:"data"`
+}
+
+type TbkCouponGetResponseResult struct {
+	Response *TbkCouponGetResponse `json:"tbk_coupon_get_response"`
+}
+
+/* 拉新API */
+type TbkScNewuserOrderGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 活动id， 现有活动id包括： 2月手淘拉新：119013_2 3月手淘拉新：119013_3 4月手淘拉新：119013_4 拉手机支付宝新用户_赚赏金：200000_5 */
+func (r *TbkScNewuserOrderGetRequest) SetActivityId(value string) {
+	r.SetValue("activity_id", value)
+}
+
+/* mm_xxx_xxx_xxx的第三位 */
+func (r *TbkScNewuserOrderGetRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 结束时间，当活动为淘宝活动，表示最晚结束时间；当活动为支付宝活动，表示最晚绑定时间；当活动为天猫活动，表示最晚领取红包的时间 */
+func (r *TbkScNewuserOrderGetRequest) SetEndTime(value string) {
+	r.SetValue("end_time", value)
+}
+
+/* 页码，默认1 */
+func (r *TbkScNewuserOrderGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认20，1~100 */
+func (r *TbkScNewuserOrderGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* mm_xxx_xxx_xxx的第二位 */
+func (r *TbkScNewuserOrderGetRequest) SetSiteId(value string) {
+	r.SetValue("site_id", value)
+}
+
+/* 开始时间，当活动为淘宝活动，表示最早注册时间；当活动为支付宝活动，表示最早绑定时间；当活动为天猫活动，表示最早领取红包时间 */
+func (r *TbkScNewuserOrderGetRequest) SetStartTime(value string) {
+	r.SetValue("start_time", value)
+}
+
+func (r *TbkScNewuserOrderGetRequest) GetResponse(accessToken string) (*TbkScNewuserOrderGetResponse, []byte, error) {
+	var resp TbkScNewuserOrderGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.sc.newuser.order.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkScNewuserOrderGetResponse struct {
+	Results *Results `json:"results"`
+}
+
+type TbkScNewuserOrderGetResponseResult struct {
+	Response *TbkScNewuserOrderGetResponse `json:"tbk_sc_newuser_order_get_response"`
+}
+
+/* 提供淘客生成淘口令接口，淘客提交口令内容、logo、url等参数，生成淘口令关键key如：￥SADadW￥，后续进行文案包装组装用于传播 */
+type TbkTpwdCreateRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 扩展字段JSON格式 */
+func (r *TbkTpwdCreateRequest) SetExt(value string) {
+	r.SetValue("ext", value)
+}
+
+/* 口令弹框logoURL */
+func (r *TbkTpwdCreateRequest) SetLogo(value string) {
+	r.SetValue("logo", value)
+}
+
+/* 口令弹框内容 */
+func (r *TbkTpwdCreateRequest) SetText(value string) {
+	r.SetValue("text", value)
+}
+
+/* 口令跳转目标页 */
+func (r *TbkTpwdCreateRequest) SetUrl(value string) {
 	r.SetValue("url", value)
 }
 
-func (r *TaobaokeWidgetUrlConvertRequest) GetResponse(accessToken string) (*TaobaokeWidgetUrlConvertResponse, []byte, error) {
-	var resp TaobaokeWidgetUrlConvertResponseResult
-	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.taobaoke.widget.url.convert", &resp)
+/* 生成口令的淘宝用户ID */
+func (r *TbkTpwdCreateRequest) SetUserId(value string) {
+	r.SetValue("user_id", value)
+}
+
+func (r *TbkTpwdCreateRequest) GetResponse(accessToken string) (*TbkTpwdCreateResponse, []byte, error) {
+	var resp TbkTpwdCreateResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.tpwd.create", &resp)
 	if err != nil {
 		return nil, data, err
 	}
 	return resp.Response, data, err
 }
 
-type TaobaokeWidgetUrlConvertResponse struct {
-	TaobaokeItem *TaobaokeItem `json:"taobaoke_item"`
+type TbkTpwdCreateResponse struct {
+	Data *MapData `json:"data"`
 }
 
-type TaobaokeWidgetUrlConvertResponseResult struct {
-	Response *TaobaokeWidgetUrlConvertResponse `json:"taobaoke_widget_url_convert_response"`
+type TbkTpwdCreateResponseResult struct {
+	Response *TbkTpwdCreateResponse `json:"tbk_tpwd_create_response"`
+}
+
+/* 获取淘抢购的数据，淘客商品转淘客链接，非淘客商品输出普通链接 */
+type TbkJuTqgGetRequest struct {
+	open_taobao.TaobaoMethodRequest
+}
+
+/* 推广位id（推广位申请方式：http://club.alimama.com/read.php?spm=0.0.0.0.npQdST&tid=6306396&ds=1&page=1&toread=1） */
+func (r *TbkJuTqgGetRequest) SetAdzoneId(value string) {
+	r.SetValue("adzone_id", value)
+}
+
+/* 最晚开团时间 */
+func (r *TbkJuTqgGetRequest) SetEndTime(value string) {
+	r.SetValue("end_time", value)
+}
+
+/* 需返回的字段列表 */
+func (r *TbkJuTqgGetRequest) SetFields(value string) {
+	r.SetValue("fields", value)
+}
+
+/* 第几页，默认1，1~100 */
+func (r *TbkJuTqgGetRequest) SetPageNo(value string) {
+	r.SetValue("page_no", value)
+}
+
+/* 页大小，默认40，1~40 */
+func (r *TbkJuTqgGetRequest) SetPageSize(value string) {
+	r.SetValue("page_size", value)
+}
+
+/* 最早开团时间 */
+func (r *TbkJuTqgGetRequest) SetStartTime(value string) {
+	r.SetValue("start_time", value)
+}
+
+func (r *TbkJuTqgGetRequest) GetResponse(accessToken string) (*TbkJuTqgGetResponse, []byte, error) {
+	var resp TbkJuTqgGetResponseResult
+	data, err := r.TaobaoMethodRequest.GetResponse(accessToken, "taobao.tbk.ju.tqg.get", &resp)
+	if err != nil {
+		return nil, data, err
+	}
+	return resp.Response, data, err
+}
+
+type TbkJuTqgGetResponse struct {
+	Results      []*Results `json:"results"`
+	TotalResults int        `json:"total_results"`
+}
+
+type TbkJuTqgGetResponseResult struct {
+	Response *TbkJuTqgGetResponse `json:"tbk_ju_tqg_get_response"`
 }

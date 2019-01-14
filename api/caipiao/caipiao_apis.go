@@ -5,7 +5,7 @@
 package caipiao
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 根据卖家id与appkey获取商品信息。 */

@@ -5,7 +5,7 @@
 package jipiao
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 产品批量添加,传入文件大小限制在1M(一般1w条记录不会超过1M),每五分钟只允许调用一次 */

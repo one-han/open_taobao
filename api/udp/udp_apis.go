@@ -5,7 +5,7 @@
 package udp
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 商品指标查询 */

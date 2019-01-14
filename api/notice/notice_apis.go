@@ -5,7 +5,7 @@
 package notice
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 获取一个appkey的哪些用户丢失了消息 */

@@ -5,7 +5,7 @@
 package favorite
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 添加商品或店铺到收藏夹 */

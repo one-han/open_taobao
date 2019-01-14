@@ -27,7 +27,7 @@
 		<tr>
 			<td class="caption">核心包</td>
 			<td colspan=2>
-				github.com/changkong/open_taobao
+				github.com/one-han/open_taobao
 			</td>
 		</tr>
 		{{range .GetConfPackage.Mx}}

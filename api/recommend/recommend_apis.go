@@ -5,7 +5,7 @@
 package recommend
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 根据类目信息推荐相关联的宝贝集 */

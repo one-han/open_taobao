@@ -5,7 +5,7 @@
 package trvael
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 该接口为用户提供旅游商品的发布功能 */

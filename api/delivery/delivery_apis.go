@@ -5,7 +5,7 @@
 package delivery
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 运单发货后，客户或者系统需要撤销运单时，调用撤销接口。 */

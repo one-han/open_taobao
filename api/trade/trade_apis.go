@@ -5,7 +5,7 @@
 package trade
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 提供异步批量获取订单详情功能<br/>

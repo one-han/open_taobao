@@ -5,7 +5,7 @@
 package subuser
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 给指定的卖家创建新的子账号角色<br/>

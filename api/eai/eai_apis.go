@@ -5,7 +5,7 @@
 package eai
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 用户接入时调用该 API 进行授权初始化的操作。

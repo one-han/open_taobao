@@ -5,7 +5,7 @@
 package hotel
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 此接口用于新增一个酒店，酒店的发布者是当前会话的用户。

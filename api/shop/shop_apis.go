@@ -5,7 +5,7 @@
 package shop
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 此API添加卖家店铺内自定义类目

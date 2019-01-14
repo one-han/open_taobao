@@ -5,7 +5,7 @@
 package fenxiao
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 合作授权审批 */

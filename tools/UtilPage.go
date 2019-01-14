@@ -6,8 +6,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/changkong/open_taobao"
-	"github.com/changkong/open_taobao/api/user"
+	"github.com/one-han/open_taobao"
+	"github.com/one-han/open_taobao/api/user"
 	"html/template"
 	"net/http"
 	"strings"

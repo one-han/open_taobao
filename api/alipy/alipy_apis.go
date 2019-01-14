@@ -5,7 +5,7 @@
 package alipy
 
 import (
-	"github.com/changkong/open_taobao"
+	"github.com/one-han/open_taobao"
 )
 
 /* 创建生活账单 */
